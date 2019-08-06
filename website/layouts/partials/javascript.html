@@ -1,0 +1,93 @@
+{{ $.Scratch.Add "index" slice }}
+{{ range site.Pages }}
+{{ $.Scratch.Add "index" (dict "title" .Title "url" .Permalink "body" .Plain "summary" .Summary) }}
+{{ end }}
+{{ $idx := $.Scratch.Get "index" | jsonify }}
+<script src="https://unpkg.com/lunr/lunr.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.0.min.js" integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
+{{ $app := resources.Get "js/app.js" | fingerprint }}
+<script src="{{ $app.RelPermalink }}" integrity="{{ $app.Data.Integrity }}"></script>
+
+<script>
+  var searchBar = $('#search-bar'),
+    searchDropdown = $('#search-dropdown'),
+    searchMenu = $('#search-menu'),
+    searchContent = $('#search-content');
+
+  var docs = JSON.parse('{{ $idx }}'),
+    store = [],
+    indexer = function() {
+      this.ref('url');
+      this.field('title', {boost:100});
+      this.field('body');
+      this.field('summary');
+
+      // Importance of document length
+      this.b(0);
+
+      // How quickly a boost given by a common word reaches saturation
+      this.k1(1.3);
+    };
+
+  var idx = lunr(function() {
+    this.use(indexer);
+    docs.forEach(function(doc) {
+      this.add(doc);
+
+      store[doc.url] = {
+        'title': doc.title,
+        'summary': doc.summary
+      }
+    }, this);
+  });
+
+  searchBar.on('focusin', function() {
+    searchBar.on('keyup', function() {
+      const searchTerm = searchBar.val().toLowerCase();
+
+      if (searchTerm) {
+        const finalSearchTerm = `${searchTerm}*`;
+        const results = idx.search(finalSearchTerm);
+
+        if (results.length > 0) {
+          searchMenu.show();
+
+          searchContent.empty();
+
+          var numAdded = 0;
+
+          results.forEach(function(res) {
+            const url = res.ref,
+              title = store[url].title,
+              summary = store[url].summary;
+
+            const item = `
+            <a class="dropdown-item" href="${url}">
+              <p class="is-size-5 has-text-weight-medium">
+                ${title}
+              </p>
+
+              <p>
+                ${summary.substring(0, 50)}...
+              </p>
+            </a>
+            `
+
+            if (numAdded < 8) {
+              searchContent.append(item);
+              numAdded++;
+            }
+          });
+
+          searchContent.show();
+        }
+      } else {
+        searchContent.hide();
+      }
+    });
+  });
+
+  searchBar.on('focusout', function() {
+
+  });
+</script>

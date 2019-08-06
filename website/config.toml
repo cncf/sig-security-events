@@ -1,0 +1,13 @@
+title = "SIG Security Events"
+disableKinds = ["section", "taxonomy", "taxonomyTerm"]
+
+[params]
+font_awesome_version = "5.10.1"
+
+[params.logos]
+navbar = "sig-security-horizontal-color.png"
+
+[[params.fonts]]
+name = "PT Sans"
+sizes = [300, 400, 600, 700]
+type = "sans_serif"
