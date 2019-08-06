@@ -6,6 +6,7 @@ font_awesome_version = "5.10.1"
 
 [params.logos]
 navbar = "sig-security-horizontal-color.png"
+footer = "sig-security-icon-white.png"
 
 [[params.fonts]]
 name = "PT Sans"
