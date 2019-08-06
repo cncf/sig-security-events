@@ -1,9 +1,9 @@
 {{ $title := site.Title }}
 {{ $logo  := printf "img/logos/%s" site.Params.logos.footer | relURL }}
-<footer class="footer has-background-dark">
+<footer class="footer has-background-primary">
   <div class="container">
     <div class="columns is-vcentered">
-      <div class="column is-one-quarter">
+      <div class="column is-2">
         <img class="is-footer-logo" src="{{ $logo }}" alt="{{ $title }} footer logo">
       </div>
 
