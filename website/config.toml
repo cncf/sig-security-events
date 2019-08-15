@@ -3,6 +3,11 @@ disableKinds = ["section", "taxonomy", "taxonomyTerm"]
 
 [params]
 font_awesome_version = "5.10.1"
+summary = """
+SIG Security Day is designed to bring together the Cloud Native security community in a community oriented space to discus and share current challenges and solutions in Cloud Native Security. This event provides a single place for people involved or getting involved in Cloud Native security to get together in a vendor neutral space.
+
+This event allows and encourages open collaboraion and sharing of cloud native security accomplishments and roadblocks. Cloud Native security is a multi-objective and multi-constrained problem space spanning many areas. Pretty much everything falls into security, from identity management to storage solutions. We want to get people connected that are passionate about this.
+"""
 
 [params.logos]
 navbar = "sig-security-horizontal-color.png"
